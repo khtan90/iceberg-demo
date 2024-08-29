@@ -1,0 +1,15 @@
+aws:
+  region: 'ap-southeast-1'
+
+s3:
+  bucket_prefix: 'iceberg-demo'
+
+athena:
+  workgroup_name: 'iceberg-demo-workgroup'
+
+glue:
+  database_name: 'iceberg_demo_db'
+  job_name: 'iceberg-demo-job'
+
+input:
+  sample_data_url: 'https://example.com/sample-data.csv'
