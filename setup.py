@@ -58,7 +58,7 @@ def setup_infrastructure(config):
     print(f"Glue Database: {config['glue']['database_name']}")
     print(f"Glue Job: {config['glue']['job_name']}")
     print("\nResource information saved to resources.yaml")
-    print("\nNext step: Run the job using run_job.py")
+    print("\nNext step: Run the job using python3 run_job.py <csv_path>")
 
 if __name__ == "__main__":
     config = load_config()

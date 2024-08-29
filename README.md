@@ -31,9 +31,12 @@ This project uses environment variables for AWS credentials. You have two option
 ### Option 2: Exporting environment variables
 
 Alternatively, you can set your AWS credentials as environment variables. In your terminal, run:
-`export AWS_ACCESS_KEY_ID=your_access_key`
-`export AWS_SECRET_ACCESS_KEY=your_secret_key`
-`export AWS_DEFAULT_REGION=your_preferred_region`
+```
+export AWS_ACCESS_KEY_ID=your_access_key
+export AWS_SECRET_ACCESS_KEY=your_secret_key
+export AWS_DEFAULT_REGION=your_preferred_region
+```
+
 
 Replace `your_access_key`, `your_secret_key`, and `your_preferred_region` with your actual AWS credentials and preferred region.
 
@@ -41,8 +44,21 @@ Replace `your_access_key`, `your_secret_key`, and `your_preferred_region` with y
 
 Choose the method that works best for your environment and security requirements. The .env file method is generally preferred for development as it persists across sessions and is less likely to expose credentials accidentally.
 
+## Verifying Your Credentials
 
-Choose the method that works best for your environment and security requirements.
+After setting up your credentials, you can verify them using these methods:
+
+1. Echo the environment variables:
+   ```
+   echo $AWS_ACCESS_KEY_ID
+   echo $AWS_SECRET_ACCESS_KEY
+   echo $AWS_DEFAULT_REGION
+   ```
+
+2. Use the AWS CLI to verify your identity:
+   ```
+   aws sts get-caller-identity
+   ```
 
 ## Setup
 
@@ -68,7 +84,7 @@ The demo is split into two main steps: setup and job execution.
 ### Step 1: Setup
 
 Run the setup script to create the necessary AWS resources:
-`python setup.py`
+`python3 setup.py`
 
 This script will:
 - Create an S3 bucket
@@ -82,12 +98,12 @@ After successful execution, the script will save the created resource informatio
 ### Step 2: Run the Job
 
 To process a CSV file, use the `run_job.py` script:
-`python run_job.py <csv_url>`
-Replace `<csv_url>` with the URL of the CSV file you want to process.
+- `python3 run_job.py <csv_url>`
+- Replace `<csv_url>` with the URL of the CSV file you want to process.
 
 For example:
-python run_job.py https://raw.githubusercontent.com/your-username/your-repo/main/data/sample1.csv
-python run_job.py https://raw.githubusercontent.com/your-username/your-repo/main/data/sample2.csv
+python run_job.py https://github.com/khtan90/iceberg-demo/blob/main/lab_resources/LOAD00000001.csv
+python run_job.py 'https://github.com/khtan90/iceberg-demo/blob/main/lab_resources/incr001.csv'
 
 This script will:
 1. Download the CSV file
@@ -101,13 +117,25 @@ After running the job, you can find the results in the S3 bucket created during 
 
 ## Cleaning Up
 
-To avoid unnecessary AWS charges, remember to delete the resources created by this demo when you're done. This includes:
+To avoid unnecessary AWS charges, remember to delete the resources created by this demo when you're done. You can use the provided cleanup script to automatically remove all created resources:
+
+1. Ensure you're in the project root directory.
+2. Run the cleanup script:
+   ```
+   python3 cleanup.py
+   ```
+
+This script will delete the following resources:
 - S3 bucket
 - Athena workgroup
 - Glue database and job
 - IAM role
 
-You can delete these resources manually through the AWS Management Console.
+It will also remove the `resources.yaml` file.
+
+**Note:** Make sure you run this script with the same AWS credentials used to create the resources. Also, ensure that you no longer need any data stored in these resources before running the cleanup.
+
+If you prefer to delete resources manually, you can do so through the AWS Management Console for each service (S3, Athena, Glue, and IAM).
 
 ## Troubleshooting
 

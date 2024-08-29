@@ -1,38 +1,11 @@
 from botocore.exceptions import ClientError
 import time
+import os
 
 def get_glue_script():
-    return """
-import sys
-from awsglue.transforms import *
-from awsglue.utils import getResolvedOptions
-from pyspark.context import SparkContext
-from awsglue.context import GlueContext
-from awsglue.job import Job
-
-args = getResolvedOptions(sys.argv, ['JOB_NAME'])
-sc = SparkContext()
-glueContext = GlueContext(sc)
-spark = glueContext.spark_session
-job = Job(glueContext)
-job.init(args['JOB_NAME'], args)
-
-# Read from CSV
-csv_dyf = glueContext.create_dynamic_frame.from_catalog(
-    database="iceberg_demo_db",
-    table_name="csv_input"
-)
-
-# Write to Iceberg table
-glueContext.write_dynamic_frame.from_catalog(
-    frame=csv_dyf,
-    database="iceberg_demo_db",
-    table_name="iceberg_table",
-    transformation_ctx="write_to_iceberg"
-)
-
-job.commit()
-"""
+    script_path = os.path.join(os.path.dirname(__file__), '..', 'scripts', 'iceberg.py')
+    with open(script_path, 'r') as file:
+        return file.read()
 
 def create_glue_job(glue_client, job_name, script_location, role_arn, bucket_name):
     try:

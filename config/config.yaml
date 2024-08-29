@@ -12,4 +12,6 @@ glue:
   job_name: 'iceberg-demo-job'
 
 input:
-  sample_data_url: 'https://example.com/sample-data.csv'
+  sample_data_urls:
+    - 'https://github.com/khtan90/iceberg-demo/blob/main/lab_resources/LOAD00000001.csv'
+    - 'https://github.com/khtan90/iceberg-demo/blob/main/lab_resources/incr001.csv'
